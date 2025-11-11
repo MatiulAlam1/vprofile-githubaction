@@ -1,8 +1,13 @@
-name: Build Job
-on: 
-  push:
-    branches: 
-      - main
+name: Vprofile CICD Workflow
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+  schedule:
+    - cron: "0 2 * * *"   # nightly run at 2 AM UTC
 
 jobs:
   Build:
@@ -10,6 +15,8 @@ jobs:
     steps:
       - name: Code checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Maven Build
         run: mvn install
@@ -21,6 +28,8 @@ jobs:
     steps:
       - name: Code checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Run tests on main branch
         run: mvn test
